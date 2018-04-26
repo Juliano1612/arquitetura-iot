@@ -17,7 +17,6 @@ mapper = {'id':[], 'group':[], 'color':[]}
 def sendMessages():
 	msgsFile = open(sys.argv[2], 'r')
 	for line in msgsFile:
-		print 'Sended'
 		msg = eval(line)
 		try:
 			clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -25,7 +24,6 @@ def sendMessages():
 			clientsocket.send(str(msg))
 		except:
 			print "ERROR: cannot stablish connection"
-		time.sleep(.2)
 
 def createNodes():
 	Pool(len(graph)).map(os.system, commandList)
@@ -33,18 +31,14 @@ def createNodes():
 
 def createAndInitNetwork():
 	#draw and show graph
-	'''cmap = plt.get_cmap('viridis')
-	mapper['color'].append(cmap(np.linspace(0, 1, len(mapper['group']))))'''
 	mapper['color']= np.array(map(ord, mapper['group']))
-	print mapper
-
 	nx.draw(graph, with_labels=True, node_color=mapper['color'], cmap=plt.cm.Blues)
 	#plt.show()
-	plt.savefig('network.png')
+	#plt.savefig('network.png')
 	#calculate shortest path between all nodes
 	pred, dist =  nx.floyd_warshall_predecessor_and_distance(graph)
 	for p in pred:
-		commandCreate = 'python node.py ' + str(p) + ' ' + str(pred[p])
+		commandCreate = 'python node.py ' + str(p) + ' ' + mapper['group'][p] + ' ' + str(pred[p])
 		commandList.append(commandCreate)
 		
 	#clear ports to create nodes
