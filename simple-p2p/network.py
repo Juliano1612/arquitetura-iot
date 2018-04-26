@@ -3,6 +3,7 @@ from multiprocessing import Pool
 from subprocess import call
 import networkx as nx
 import matplotlib.pyplot as plt
+import numpy as np
 
 nodeList = []
 lines = []
@@ -10,6 +11,7 @@ commandList = []
 graph = nx.Graph()
 pred = None
 dist = None
+mapper = {'id':[], 'group':[], 'color':[]}
 
 
 def sendMessages():
@@ -31,9 +33,14 @@ def createNodes():
 
 def createAndInitNetwork():
 	#draw and show graph
-	nx.draw(graph, with_labels=True)
+	'''cmap = plt.get_cmap('viridis')
+	mapper['color'].append(cmap(np.linspace(0, 1, len(mapper['group']))))'''
+	mapper['color']= np.array(map(ord, mapper['group']))
+	print mapper
+
+	nx.draw(graph, with_labels=True, node_color=mapper['color'], cmap=plt.cm.Blues)
 	#plt.show()
-	#plt.savefig('network.png')
+	plt.savefig('network.png')
 	#calculate shortest path between all nodes
 	pred, dist =  nx.floyd_warshall_predecessor_and_distance(graph)
 	for p in pred:
@@ -55,17 +62,18 @@ def createAndInitNetwork():
 def init():
 	configFile = open(sys.argv[1], 'r')
 	for line in configFile:
-		#map all string elements to an int list
-		line = map(int, line.split())
+		line = line.split()
 		#pop first element to reference
-		first = line.pop(0)
-		graph.add_node(first)
-		nodeList = [(first, first)]
+		first = (line.pop(0)).split(':')
+		graph.add_node(int(first[0]))
+		nodeList = [(int(first[0]), int(first[0]))]
+		mapper['id'].append(int(first[0]))
+		mapper['group'].append(first[1])
+		line = map(int, line)
 		for n in line:
-			nodeList.append((first, n))
+			nodeList.append((int(first[0]), n))
 		# print nodeList
 		graph.add_edges_from(nodeList)
-
 init()
 createAndInitNetwork()
 sendMessages()
