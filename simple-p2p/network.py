@@ -5,45 +5,56 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 nodeList = []
+lines = []
 commandList = []
 graph = nx.Graph()
 pred = None
 dist = None
 
 
+def sendMessages():
+	msgsFile = open(sys.argv[2], 'r')
+	for line in msgsFile:
+		print 'Sended'
+		msg = eval(line)
+		try:
+			clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			clientsocket.connect(('localhost', 8090+int(msg['S'])))
+			clientsocket.send(str(msg))
+		except:
+			print "ERROR: cannot stablish connection"
+		time.sleep(.2)
+
 def createNodes():
 	Pool(len(graph)).map(os.system, commandList)
+
 
 def createAndInitNetwork():
 	#draw and show graph
 	nx.draw(graph, with_labels=True)
-	# plt.show()
+	#plt.show()
+	#plt.savefig('network.png')
 	#calculate shortest path between all nodes
 	pred, dist =  nx.floyd_warshall_predecessor_and_distance(graph)
-	#create thread to start nodes
-	t = threading.Thread(target=createNodes, args=())
-	t.start()
-	#send route table to all nodes
-	time.sleep(1)
 	for p in pred:
-		clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		# passed = False
-		# while not passed:
-		try:
-			# print "TRY"
-			clientsocket.connect(('localhost', int(8090+p)))
-			clientsocket.send(pred[p])
-			# passed = True
-			print('Foi ', p)
-		except:
-			print('n Foi ', p)
-			# pass
+		commandCreate = 'python node.py ' + str(p) + ' ' + str(pred[p])
+		commandList.append(commandCreate)
+		
+	#clear ports to create nodes
+	clearPort = 'sudo fuser -k -n tcp '
+	for g in nx.nodes(graph):
+		clearPort = clearPort + str(8090+g) + ' '
+	print clearPort
+	os.system(clearPort)
+
+	t = threading.Thread(target=(createNodes), args=())
+	t.start()
+	time.sleep(1)
+
+
 def init():
 	configFile = open(sys.argv[1], 'r')
 	for line in configFile:
-		#create node execution command
-		command = 'python node.py '+ line
-		commandList.append(command)
 		#map all string elements to an int list
 		line = map(int, line.split())
 		#pop first element to reference
@@ -57,3 +68,4 @@ def init():
 
 init()
 createAndInitNetwork()
+sendMessages()
