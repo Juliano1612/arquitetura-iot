@@ -10,7 +10,6 @@ routeTable = None
 mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def recvMessage(msg):
-	global NSEND
 	#message reached the destination
 	if int(msg['R']) == ID:
 		if msg['M'].startswith('RESP'):
@@ -19,11 +18,9 @@ def recvMessage(msg):
 			print 'ID: ', str(ID),' REQUEST RECEIVED: ', msg['M']
 			msg['M'] = 'RESP' + msg['M']
 			msg['S'], msg['R'], msg['GS'], msg['GR'] = msg['R'], msg['S'], msg['GR'], msg['GS']
-			NSEND += 1
 			sendMessage(msg)
 	else:
 		#print 'ID: ', str(ID),' resending message'
-		NSEND += 1
 		sendMessage(msg)
 
 def sendMessage(msg):

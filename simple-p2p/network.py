@@ -13,11 +13,17 @@ pred = None
 dist = None
 mapper = {'id':[], 'group':[], 'color':[]}
 
+def createJSON(line):
+	line = line.split()
+	msg = '{\'S\':\''+str(line[0])+'\',\'GS\':\''+ mapper['group'][mapper['id'].index(int(line[0]))] +'\',\'R\':\''+str(line[1])+'\',\'GR\':\''+ mapper['group'][mapper['id'].index(int(line[1]))]+'\',\'M\':\''+ str(line[2])+'\'}'
+	#print msg
+	return msg
 
 def sendMessages():
+	global mapper
 	msgsFile = open(sys.argv[2], 'r')
 	for line in msgsFile:
-		msg = eval(line)
+		msg = eval(createJSON(line))
 		try:
 			clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			clientsocket.connect(('localhost', 8090+int(msg['S'])))
@@ -54,6 +60,8 @@ def createAndInitNetwork():
 
 
 def init():
+	f = open('simulation_data.txt', 'w')
+	f.write(sys.argv[2]+'\n')
 	configFile = open(sys.argv[1], 'r')
 	for line in configFile:
 		line = line.split()
