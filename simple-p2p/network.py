@@ -28,6 +28,7 @@ def sendMessages():
 			clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			clientsocket.connect(('localhost', 8090+int(msg['S'])))
 			clientsocket.send(str(msg))
+			time.sleep(0.2)
 		except:
 			print "ERROR: cannot stablish connection"
 
