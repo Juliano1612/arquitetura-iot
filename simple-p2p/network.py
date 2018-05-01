@@ -21,14 +21,14 @@ def createJSON(line):
 
 def sendMessages():
 	global mapper
-	msgsFile = open(sys.argv[2], 'r')
+	msgsFile = open('../scenarios/scenario'+sys.argv[2], 'r')
 	for line in msgsFile:
 		msg = eval(createJSON(line))
 		try:
 			clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			clientsocket.connect(('localhost', 8090+int(msg['S'])))
 			clientsocket.send(str(msg))
-			time.sleep(0.2)
+			time.sleep(0.1)
 		except:
 			print "ERROR: cannot stablish connection"
 
@@ -41,11 +41,11 @@ def createAndInitNetwork():
 	mapper['color']= np.array(map(ord, mapper['group']))
 	nx.draw(graph, with_labels=True, node_color=mapper['color'], cmap=plt.cm.Blues)
 	#plt.show()
-	#plt.savefig('network.png')
+	plt.savefig('../networks/network'+ sys.argv[1] +'.png')
 	#calculate shortest path between all nodes
 	pred, dist =  nx.floyd_warshall_predecessor_and_distance(graph)
 	for p in pred:
-		commandCreate = 'python node.py ' + str(p) + ' ' + mapper['group'][p] + ' ' + str(pred[p])
+		commandCreate = 'python node.py ' + str(p) + ' ' + mapper['group'][p] + ' ' + sys.argv[1] + ' ' + sys.argv[2] + ' ' + str(pred[p])
 		commandList.append(commandCreate)
 		
 	#clear ports to create nodes
@@ -61,9 +61,9 @@ def createAndInitNetwork():
 
 
 def init():
-	f = open('simulation_data.txt', 'w')
-	f.write(sys.argv[2]+'\n')
-	configFile = open(sys.argv[1], 'r')
+	f = open('../results/simulation_network'+sys.argv[1]+'_scenario'+sys.argv[2], 'w')
+	#f.write(sys.argv[2]+'\n')
+	configFile = open('../networks/network'+sys.argv[1], 'r')
 	for line in configFile:
 		line = line.split()
 		#pop first element to reference

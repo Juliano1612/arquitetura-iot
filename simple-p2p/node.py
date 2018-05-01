@@ -10,6 +10,9 @@ routeTable = None
 mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def recvMessage(msg):
+	global NRCVD
+	if int(msg['S']) == ID:
+		NRCVD -= 1
 	#message reached the destination
 	if int(msg['R']) == ID:
 		if msg['M'].startswith('RESP'):
@@ -42,7 +45,7 @@ def sendMessage(msg):
 def populateNeighborsList():
 	global routeTable
 	argument = ''
-	for arg in  sys.argv[3:]:
+	for arg in  sys.argv[5:]:
 		argument += arg
 	routeTable = eval(argument)
 	#print 'ID: ', str(ID), ' -> ' ,routeTable
@@ -69,7 +72,7 @@ def init():
 				NRCVD += 1
 				recvMessage(eval(msgBuf))
 	finally:
-		st = open('simulation_data.txt', 'a')
+		st = open('../results/simulation_network'+sys.argv[3]+'_scenario'+sys.argv[4], 'a')
 		fcntl.flock(st, fcntl.LOCK_EX)
 		st.write(str(ID)+' '+ GROUP + ' ' + str(NSEND) + ' ' + str(NRCVD) + '\n')
 		fcntl.flock(st, fcntl.LOCK_UN)
