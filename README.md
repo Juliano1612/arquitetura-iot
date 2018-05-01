@@ -1,4 +1,4 @@
-# arquitetura-iot
+# Cached IoT Architecture Simulator
 
 ###### Dependencies
 - networkx

@@ -15,7 +15,7 @@ mapper = {'id':[], 'group':[], 'color':[]}
 
 def createJSON(line):
 	line = line.split()
-	msg = '{\'S\':\''+str(line[0])+'\',\'GS\':\''+ mapper['group'][mapper['id'].index(int(line[0]))] +'\',\'R\':\''+str(line[1])+'\',\'GR\':\''+ mapper['group'][mapper['id'].index(int(line[1]))]+'\',\'M\':\''+ str(line[2])+'\'}'
+	msg = '{\'S\':\''+str(line[0])+'\',\'GS\':\''+ mapper['group'][mapper['id'].index(int(line[0]))] +'\',\'R\':\''+str(line[1])+'\',\'GR\':\''+ mapper['group'][mapper['id'].index(int(line[1]))]+'\',\'M\':\''+ str(line[2])+'\',\'L\':\'\' ,\'T\':\'RQ\'}'
 	#print msg
 	return msg
 
@@ -61,7 +61,7 @@ def createAndInitNetwork():
 
 
 def init():
-	f = open('../results/simple-p2p/simulation_network'+sys.argv[1]+'_scenario'+sys.argv[2], 'w')
+	f = open('../results/cache-group/simulation_network'+sys.argv[1]+'_scenario'+sys.argv[2], 'w')
 	#f.write(sys.argv[2]+'\n')
 	configFile = open('../networks/network'+sys.argv[1], 'r')
 	for line in configFile:
