@@ -32,7 +32,7 @@ def statsGeneral():
     print str(len(i)) + '\t\t' + str(totSend) + '\t\t\t' + str(totRecv)
 
 def init():
-    f = open('simulation_network'+sys.argv[1]+'_scenario'+sys.argv[2], 'r')
+    f = open(sys.argv[1]+'/simulation_network'+sys.argv[2]+'_scenario'+sys.argv[3], 'r')
     print 'STATS OF ', f.readline()
     for line in f:
         data = line.split()

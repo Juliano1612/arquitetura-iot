@@ -61,7 +61,7 @@ def createAndInitNetwork():
 
 
 def init():
-	f = open('../results/simulation_network'+sys.argv[1]+'_scenario'+sys.argv[2], 'w')
+	f = open('../results/simple-p2p/simulation_network'+sys.argv[1]+'_scenario'+sys.argv[2], 'w')
 	#f.write(sys.argv[2]+'\n')
 	configFile = open('../networks/network'+sys.argv[1], 'r')
 	for line in configFile:

@@ -72,7 +72,7 @@ def init():
 				NRCVD += 1
 				recvMessage(eval(msgBuf))
 	finally:
-		st = open('../results/simulation_network'+sys.argv[3]+'_scenario'+sys.argv[4], 'a')
+		st = open('../results/simple-p2p/simulation_network'+sys.argv[3]+'_scenario'+sys.argv[4], 'a')
 		fcntl.flock(st, fcntl.LOCK_EX)
 		st.write(str(ID)+' '+ GROUP + ' ' + str(NSEND) + ' ' + str(NRCVD) + '\n')
 		fcntl.flock(st, fcntl.LOCK_UN)
