@@ -15,25 +15,25 @@ def recvMessage(msg):
 	cache = False
 	#if isnt generated message
 	if int(msg['S']) == ID:
-		NRCVD -= 1
+		NRCVD = NRCVD-1
+
 	if msg['T'] == 'RQ':
 		#if the communication is from out and i'm from recv group and not have cache
 		if msg['GS'] != msg['GR'] and GROUP == msg['GR'] and msg['L'] ==  '':
+			print 'Im the cache of this message ',ID , ' to ' + msg['R']
 			msg['L'] = str(ID)
 			if msg['S'] in confiableList:
 				cache = True
-			#print 'Im the cache of this message'
-	elif msg['L'] == str(ID):
-		#print 'I\'m the cache ' + str(ID)
+	if msg['T'] == 'RS' and int(msg['L']) == ID:
 		confiableList.append(msg['R'])
 
 	#message reached the destination
 	if int(msg['R']) == ID or cache:
-		if msg['M'].startswith('RESP'):
+		if msg['T'] == 'RS':
 			print 'ID: ', str(ID),' RESPONSE RECEIVED: ', msg['M']
 		else:
 			print 'ID: ', str(ID),' REQUEST RECEIVED: ', msg['M']
-			msg['M'] = 'RESP' + msg['M']
+			#msg['M'] = 'RESP' + msg['M']
 			msg['S'], msg['R'], msg['GS'], msg['GR'], msg['T'] = msg['R'], msg['S'], msg['GR'], msg['GS'], 'RS'
 			sendMessage(msg)
 	else:
@@ -44,6 +44,8 @@ def sendMessage(msg):
 	global NSEND
 	clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	by = routeTable[int(msg['R'])]
+	while routeTable[by] != ID:
+		by = routeTable[by]
 	try:
 		if by == ID:
 			clientsocket.connect(('localhost', 8090+int(msg['R'])))
@@ -52,7 +54,7 @@ def sendMessage(msg):
 	except:
 		print 'ERROR: cannot stablish connection'	
 	#print 'ID: ', str(ID),' resending message to ', str(routeTable[int(msg['R'])])
-	NSEND += 1
+	NSEND = NSEND+1
 	clientsocket.send(str(msg))
 	
 
@@ -62,7 +64,7 @@ def populateNeighborsList():
 	for arg in  sys.argv[5:]:
 		argument += arg
 	routeTable = eval(argument)
-	#print 'ID: ', str(ID), ' -> ' ,routeTable
+	print 'ID: ', str(ID), ' -> ' ,routeTable
 
 
 def init():
@@ -83,10 +85,10 @@ def init():
 			msgBuf = connection.recv(256)
 			if len(msgBuf) > 0:
 				#print 'ID: ', str(ID) , ' MSG: ', msgBuf
-				NRCVD += 1
+				NRCVD = NRCVD+1
 				recvMessage(eval(msgBuf))
 	finally:
-		st = open('../results/cache-group/simulation_network'+sys.argv[3]+'_scenario'+sys.argv[4], 'a')
+		st = open('../results/cache-node/simulation_network'+sys.argv[3]+'_scenario'+sys.argv[4], 'a')
 		fcntl.flock(st, fcntl.LOCK_EX)
 		st.write(str(ID)+' '+ GROUP + ' ' + str(NSEND) + ' ' + str(NRCVD) + '\n')
 		fcntl.flock(st, fcntl.LOCK_UN)

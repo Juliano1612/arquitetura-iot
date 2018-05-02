@@ -30,6 +30,8 @@ def sendMessage(msg):
 	global NSEND
 	clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	by = routeTable[int(msg['R'])]
+	while routeTable[by] != ID:
+		by = routeTable[by]
 	try:
 		if by == ID:
 			clientsocket.connect(('localhost', 8090+int(msg['R'])))
