@@ -33,7 +33,6 @@ def statsGeneral():
 
 def init():
     f = open(sys.argv[1]+'/simulation_network'+sys.argv[2]+'_scenario'+sys.argv[3], 'r')
-    print 'STATS OF ', f.readline()
     for line in f:
         data = line.split()
         info.append((data[0], data[1], data[2], data[3]))
