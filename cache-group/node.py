@@ -22,10 +22,10 @@ def recvMessage(msg):
 		if msg['GS'] != msg['GR'] and GROUP == msg['GR'] and msg['L'] ==  '':
 			print 'Im the cache of this message ',ID , ' to ' + msg['R']
 			msg['L'] = str(ID)
-			if msg['S'] in confiableList:
+			if msg['GS'] in confiableList:
 				cache = True
 	if msg['T'] == 'RS' and int(msg['L']) == ID:
-		confiableList.append(msg['R'])
+		confiableList.append(msg['GR'])
 
 	#message reached the destination
 	if int(msg['R']) == ID or cache:
@@ -88,7 +88,7 @@ def init():
 				NRCVD = NRCVD+1
 				recvMessage(eval(msgBuf))
 	finally:
-		st = open('../results/cache-node/simulation_network'+sys.argv[3]+'_scenario'+sys.argv[4], 'a')
+		st = open('../results/cache-group/simulation_network'+sys.argv[3]+'_scenario'+sys.argv[4], 'a')
 		fcntl.flock(st, fcntl.LOCK_EX)
 		st.write(str(ID)+' '+ GROUP + ' ' + str(NSEND) + ' ' + str(NRCVD) + '\n')
 		fcntl.flock(st, fcntl.LOCK_UN)
