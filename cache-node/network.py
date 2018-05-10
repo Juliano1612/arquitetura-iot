@@ -39,7 +39,7 @@ def createNodes():
 def createAndInitNetwork():
 	#draw and show graph
 	mapper['color']= np.array(map(ord, mapper['group']))
-	nx.draw(graph, with_labels=True, node_color=mapper['color'], cmap=plt.cm.Blues)
+	nx.draw_kamada_kawai(graph, with_labels=True, node_color=mapper['color'], cmap=plt.cm.Blues)
 	#plt.show()
 	plt.savefig('../networks/network'+ sys.argv[1] +'.png')
 	#calculate shortest path between all nodes

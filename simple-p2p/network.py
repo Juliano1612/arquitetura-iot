@@ -2,6 +2,7 @@ import sys, os, socket, threading, time
 from multiprocessing import Pool
 from subprocess import call
 import networkx as nx
+# from networkx.drawing.nx_agraph import graphviz_layout
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -39,9 +40,9 @@ def createNodes():
 def createAndInitNetwork():
 	#draw and show graph
 	mapper['color']= np.array(map(ord, mapper['group']))
-	nx.draw(graph, with_labels=True, node_color=mapper['color'], cmap=plt.cm.Blues)
-	#plt.show()
-	plt.savefig('../networks/network'+ sys.argv[1] +'.png')
+	nx.draw_kamada_kawai(graph,with_labels=True, node_color=mapper['color'], cmap=plt.cm.Greens)
+	plt.show()
+	#plt.savefig('../networks/network'+ sys.argv[1] +'.png')
 	#calculate shortest path between all nodes
 	pred, dist =  nx.floyd_warshall_predecessor_and_distance(graph)
 	for p in pred:
