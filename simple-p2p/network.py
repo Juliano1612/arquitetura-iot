@@ -27,7 +27,7 @@ def sendMessages():
 		msg = eval(createJSON(line))
 		try:
 			clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			clientsocket.connect(('localhost', 8090+int(msg['S'])))
+			clientsocket.connect(('localhost',  9090+int(msg['S'])))
 			clientsocket.send(str(msg))
 			time.sleep(0.1)
 		except:
@@ -52,7 +52,7 @@ def createAndInitNetwork():
 	#clear ports to create nodes
 	clearPort = 'sudo fuser -k -n tcp '
 	for g in nx.nodes(graph):
-		clearPort = clearPort + str(8090+g) + ' '
+		clearPort = clearPort + str( 9090+g) + ' '
 	print clearPort
 	os.system(clearPort)
 
