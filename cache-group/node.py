@@ -24,7 +24,7 @@ def recvMessage(msg):
 			msg['L'] = str(ID)
 			if msg['GS'] in confiableList:
 				cache = True
-	if msg['T'] == 'RS' and int(msg['L']) == ID:
+	if msg['T'] == 'RS' and msg['L'] != '' and int(msg['L']) == ID:
 		confiableList.append(msg['GR'])
 
 	#message reached the destination
