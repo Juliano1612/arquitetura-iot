@@ -1,0 +1,68 @@
+{
+	"type": "serial",
+	"categoryField": "category",
+	"startDuration": 1,
+	"theme": "default",
+	"categoryAxis": {
+		"gridPosition": "start"
+	},
+	"trendLines": [],
+	"graphs": [
+		{
+			"balloonText": "[[title]] of [[category]]:[[value]]",
+			"fillAlphas": 1,
+			"id": "AmGraph-1",
+			"title": "Simples",
+			"type": "column",
+			"valueField": "Simples"
+		},
+		{
+			"balloonText": "[[title]] of [[category]]:[[value]]",
+			"fillAlphas": 1,
+			"id": "AmGraph-2",
+			"title": "Cache por nó",
+			"type": "column",
+			"valueField": "Cache por nó"
+		},
+		{
+			"balloonColor": "undefined",
+			"balloonText": "[[title]] of [[category]]:[[value]]",
+			"fillAlphas": 1,
+			"fillColors": "#008000",
+			"id": "AmGraph-3",
+			"lineAlpha": 0,
+			"lineColor": "#008000",
+			"title": "Cache por grupo",
+			"type": "column",
+			"valueField": "Cache por grupo"
+		}
+	],
+	"guides": [],
+	"valueAxes": [
+		{
+			"id": "ValueAxis-1",
+			"title": "Mensagens"
+		}
+	],
+	"allLabels": [],
+	"balloon": {},
+	"legend": {
+		"enabled": true,
+		"useGraphSettings": true
+	},
+	"titles": [
+		{
+			"id": "Title-1",
+			"size": 15,
+			"text": "Mensagens trocadas"
+		}
+	],
+	"dataProvider": [
+		{
+			"category": "Quantidade total de mensagens trocadas",
+			"Simples": "87195",
+			"Cache por nó": "62031",
+			"Cache por grupo": "59779"
+		}
+	]
+}
